@@ -38,20 +38,44 @@ st.markdown("""
 }
 
 /* ── Global Reset ─────────────────────────────────────────────────────────── */
-html, body, [data-testid="stAppViewContainer"], [data-testid="stApp"] {
+html, body {
   background: var(--bg) !important;
   color: var(--text) !important;
   font-family: 'Inter', sans-serif;
 }
+[data-testid="stAppViewContainer"],
+[data-testid="stApp"],
+.stApp {
+  background: var(--bg) !important;
+  color: var(--text) !important;
+}
 
-/* Hide Streamlit chrome */
-#MainMenu, header, footer, [data-testid="stToolbar"],
-[data-testid="stDecoration"], [data-testid="stStatusWidget"] { display: none !important; }
-
-/* Remove default padding */
-[data-testid="stAppViewContainer"] > .main > .block-container {
+/* Hide Streamlit chrome — use visibility:hidden NOT display:none so the
+   layout wrapper stays intact on Streamlit Cloud (display:none can collapse
+   the entire app container in some Cloud versions) */
+#MainMenu { display: none !important; }
+header[data-testid="stHeader"],
+footer,
+[data-testid="stToolbar"],
+[data-testid="stDecoration"],
+[data-testid="stStatusWidget"] {
+  visibility: hidden !important;
+  height: 0 !important;
+  min-height: 0 !important;
   padding: 0 !important;
+  margin: 0 !important;
+  overflow: hidden !important;
+}
+
+/* Block container — keep a minimum height so Streamlit renders content */
+[data-testid="stAppViewContainer"] > .main > .block-container,
+[data-testid="block-container"] {
+  padding-top: 0 !important;
+  padding-bottom: 0 !important;
+  padding-left: 0 !important;
+  padding-right: 0 !important;
   max-width: 100% !important;
+  min-height: 100vh;
 }
 
 /* ── Fixed Ambient Background Layer ──────────────────────────────────────── */
